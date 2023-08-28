@@ -1,0 +1,1 @@
+RENAME TABLE orderItem TO order_item;

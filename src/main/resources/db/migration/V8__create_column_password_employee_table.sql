@@ -1,0 +1,1 @@
+ALTER TABLE employee ADD password varchar(255)
