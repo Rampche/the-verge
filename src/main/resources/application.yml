@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/theverge?createDatabaseIfNotExist=true
+    username: Greg
+    password: admin_123
+jpa:
+  hibernate:
+    ddl-auto: update
+  jackson:
+    default-property-inclusion: non-null
+
