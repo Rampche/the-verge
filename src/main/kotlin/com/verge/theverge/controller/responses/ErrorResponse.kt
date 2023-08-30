@@ -1,6 +1,4 @@
-package com.verge.theverge.controller.response
-
-import org.springframework.validation.FieldError
+package com.verge.theverge.controller.responses
 
 data class ErrorResponse(
     var httpCode: Int,

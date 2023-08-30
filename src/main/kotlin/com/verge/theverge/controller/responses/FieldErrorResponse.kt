@@ -1,4 +1,4 @@
-package com.verge.theverge.controller.response
+package com.verge.theverge.controller.responses
 
 data class FieldErrorResponse (
     var message: String,
