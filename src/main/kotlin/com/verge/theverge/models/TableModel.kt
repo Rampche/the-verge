@@ -18,6 +18,6 @@ data class TableModel(
 
     @Column
     @Enumerated(EnumType.STRING)
-    var status: TableStatus? = TableStatus.EMPTY
+    var status: TableStatus
 
 )
