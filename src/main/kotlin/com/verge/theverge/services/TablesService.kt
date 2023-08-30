@@ -18,7 +18,7 @@ class TablesService(val tableRepository: TableRepository) {
     //Find table by Id
     fun findTableById(id: Int): TableModel {
         if (!tableRepository.existsById(id)){
-            throw NotFoundException(Errors.VG0003.message.format(id), Errors.VG0003.code)
+            throw NotFoundException(Errors.VG202.message.format(id), Errors.VG202.code)
         }
         return tableRepository.findById(id).orElseThrow()
     }
@@ -31,7 +31,7 @@ class TablesService(val tableRepository: TableRepository) {
     //Update table
     fun updateTable(table: TableModel) {
         if (!tableRepository.existsById(table.id!!)){
-            throw NotFoundException(Errors.VG0003.message.format(table.id), Errors.VG0003.code)
+            throw NotFoundException(Errors.VG202.message.format(table.id), Errors.VG202.code)
         }
         tableRepository.save(table)
     }
@@ -39,7 +39,7 @@ class TablesService(val tableRepository: TableRepository) {
     //Delete table
     fun deleteTable(id: Int) {
         if (!tableRepository.existsById(id)){
-            throw NotFoundException(Errors.VG0003.message.format(id), Errors.VG0003.code)
+            throw NotFoundException(Errors.VG202.message.format(id), Errors.VG202.code)
         }
         val table = findTableById(id)
         updateTable(table)

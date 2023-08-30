@@ -26,13 +26,13 @@ class InvoiceService(
     //List invoices by id
     fun findInvoiceById(id: Int): InvoiceModel {
         return invoiceRepository.findById(id)
-            .orElseThrow { NotFoundException(Errors.VG0009.message.format(id), Errors.VG0009.code) }
+            .orElseThrow { NotFoundException(Errors.VG601.message.format(id), Errors.VG601.code) }
     }
 
     //Update invoice
     fun updateInvoice(invoice: InvoiceModel) {
         if (!invoiceRepository.existsById(invoice.id!!)) {
-            throw NotFoundException(Errors.VG0009.message.format(invoice.id), Errors.VG0009.code)
+            throw NotFoundException(Errors.VG601.message.format(invoice.id), Errors.VG601.code)
         }
         invoiceRepository.save(invoice)
     }
@@ -40,7 +40,7 @@ class InvoiceService(
     //Delete the invoice
     fun deleteInvoice(id: Int) {
         if (!invoiceRepository.existsById(id)) {
-            throw NotFoundException(Errors.VG0009.message.format(id), Errors.VG0009.code)
+            throw NotFoundException(Errors.VG601.message.format(id), Errors.VG601.code)
         }
         invoiceRepository.deleteById(id)
     }

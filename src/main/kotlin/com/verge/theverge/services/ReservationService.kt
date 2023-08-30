@@ -36,19 +36,19 @@ class ReservationService(
 
     //List reservations by id
     fun findReservationById(id: Int):ReservationModel{
-        return reservationRepository.findById(id).orElseThrow { NotFoundException(Errors.VG0005.message.format(id), Errors.VG0005.code) }
+        return reservationRepository.findById(id).orElseThrow { NotFoundException(Errors.VG401.message.format(id), Errors.VG401.code) }
     }
 
     //Update the reservation
     fun updateReservation(reservation: ReservationModel, tableUpdated: TableModel?){
         if (!reservationRepository.existsById(reservation.id!!)){
-            throw NotFoundException(Errors.VG0005.message.format(reservation.id), Errors.VG0005.code)
+            throw NotFoundException(Errors.VG401.message.format(reservation.id), Errors.VG401.code)
         }
         if (tableUpdated != null && tableUpdated.status == TableStatus.EMPTY) {
             tableUpdated.status = TableStatus.RESERVED
             tableRepository.save(tableUpdated)
         } else if (tableUpdated != null && tableUpdated.status == TableStatus.RESERVED){
-            throw ReservedTableException(Errors.VG0001.message.format(tableUpdated.id), Errors.VG0001.code)
+            throw ReservedTableException(Errors.VG201.message.format(tableUpdated.id), Errors.VG201.code)
         }
         reservationRepository.save(reservation)
     }
@@ -56,7 +56,7 @@ class ReservationService(
     //Delete the reservation
     fun deleteReservation(id: Int){
         if (!reservationRepository.existsById(id)){
-          throw NotFoundException(Errors.VG0005.message.format(id), Errors.VG0005.code)
+          throw NotFoundException(Errors.VG401.message.format(id), Errors.VG401.code)
         }
         val reserve = reservationRepository.findById(id)
         val table = reserve.get().table

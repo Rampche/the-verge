@@ -26,7 +26,7 @@ class EmployeeService(val employeeRepository: EmployeeRepository) {
     fun findActives(): List<EmployeeModel> {
         val activeEmployee = EmployeeStatus.ACTIVE
         if (!employeeRepository.existsByStatus(EmployeeStatus.ACTIVE)){
-            throw NotFoundException(Errors.VG0007.message.format(activeEmployee.toString()), Errors.VG0007.code)
+            throw NotFoundException(Errors.VG302.message.format(activeEmployee.toString()), Errors.VG302.code)
         }
         return employeeRepository.findByStatus(EmployeeStatus.ACTIVE)
     }
@@ -35,7 +35,7 @@ class EmployeeService(val employeeRepository: EmployeeRepository) {
     fun findDismisseds(): List<EmployeeModel> {
         val dismissedEmployee = EmployeeStatus.DISMISSED
         if (!employeeRepository.existsByStatus(EmployeeStatus.DISMISSED)){
-            throw NotFoundException(Errors.VG0007.message.format(dismissedEmployee.toString()), Errors.VG0007.code)
+            throw NotFoundException(Errors.VG302.message.format(dismissedEmployee.toString()), Errors.VG302.code)
         }
         return employeeRepository.findByStatus(EmployeeStatus.DISMISSED)
     }
@@ -48,7 +48,7 @@ class EmployeeService(val employeeRepository: EmployeeRepository) {
     //Find Employee by Id
     fun findEmployeeById(id: Int): EmployeeModel {
         if (!employeeRepository.existsById(id)){
-            throw NotFoundException(Errors.VG0004.message.format(id), Errors.VG0004.code)
+            throw NotFoundException(Errors.VG301.message.format(id), Errors.VG301.code)
         }
         return employeeRepository.findById(id).orElseThrow()
     }
@@ -56,7 +56,7 @@ class EmployeeService(val employeeRepository: EmployeeRepository) {
     //Update Employee
     fun updateEmployee(employee: EmployeeModel) {
         if (!employeeRepository.existsById(employee.id!!)){
-            throw NotFoundException(Errors.VG0004.message.format(employee.id), Errors.VG0004.code)
+            throw NotFoundException(Errors.VG301.message.format(employee.id), Errors.VG301.code)
         }
         employeeRepository.save(employee)
     }
@@ -64,7 +64,7 @@ class EmployeeService(val employeeRepository: EmployeeRepository) {
     //Delete Employee
     fun deleteEmployee(id: Int) {
         if (!employeeRepository.existsById(id)){
-            throw NotFoundException(Errors.VG0004.message.format(id), Errors.VG0004.code)
+            throw NotFoundException(Errors.VG301.message.format(id), Errors.VG301.code)
         }
         val employee = findEmployeeById(id)
         employee.status = EmployeeStatus.DISMISSED

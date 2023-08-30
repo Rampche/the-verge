@@ -23,13 +23,13 @@ class OrderItemService(
 
     //List orderitem by id
     fun findOrderItemById(id: Int):OrderItemModel{
-        return orderItemRepository.findById(id).orElseThrow { NotFoundException(Errors.VG0010.message.format(id), Errors.VG0010.code) }
+        return orderItemRepository.findById(id).orElseThrow { NotFoundException(Errors.VG701.message.format(id), Errors.VG701.code) }
     }
 
     //Update the OrderItem
     fun updateOrderItem(orderItem: OrderItemModel){
         if (!orderItemRepository.existsById(orderItem.id!!)){
-            throw NotFoundException(Errors.VG0010.message.format(orderItem.id), Errors.VG0010.code)
+            throw NotFoundException(Errors.VG701.message.format(orderItem.id), Errors.VG701.code)
         }
         orderItemRepository.save(orderItem)
     }
@@ -37,7 +37,7 @@ class OrderItemService(
     //Delete the OrderItem
     fun deleteOrderItem(id: Int){
         if (!orderItemRepository.existsById(id)){
-          throw NotFoundException(Errors.VG0010.message.format(id), Errors.VG0010.code)
+          throw NotFoundException(Errors.VG701.message.format(id), Errors.VG701.code)
         }
         orderItemRepository.deleteById(id)
     }
