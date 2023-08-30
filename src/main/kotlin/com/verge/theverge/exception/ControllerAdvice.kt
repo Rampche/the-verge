@@ -1,6 +1,6 @@
 package com.verge.theverge.exception
 
-import com.verge.theverge.controller.response.ErrorResponse
+import com.verge.theverge.controller.responses.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -31,6 +31,17 @@ class ControllerAdvice {
             null
         )
         return ResponseEntity(error, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(BadRequestException::class)
+    fun handleBadRequestException(ex: BadRequestException, request: WebRequest): ResponseEntity<ErrorResponse> {
+        val error = ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            ex.message,
+            ex.errorCode,
+            null
+        )
+        return ResponseEntity(error, HttpStatus.BAD_REQUEST)
     }
 
 
