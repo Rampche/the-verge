@@ -14,13 +14,19 @@ import com.verge.theverge.controller.requests.reservation.PostReservationRequest
 import com.verge.theverge.controller.requests.reservation.PutReservationRequest
 import com.verge.theverge.controller.requests.tables.PostTableRequest
 import com.verge.theverge.controller.requests.tables.PutTableRequest
+import com.verge.theverge.controller.responses.CustomerResponse
+import com.verge.theverge.enums.CustomerStatus
+import com.verge.theverge.enums.EmployeeStatus
+import com.verge.theverge.enums.RoleType
+import com.verge.theverge.enums.TableStatus
 import com.verge.theverge.models.*
 
 fun PostCustomerRequest.toCustomerModel(): CustomerModel {
 return CustomerModel(
     name = this.name,
     email=this.email,
-    password = this.password
+    password = this.password,
+    status = CustomerStatus.ACTIVE
 )
 }
 
@@ -29,24 +35,27 @@ fun PutCustomerRequest.toCustomerModel(previousValue: CustomerModel ):CustomerMo
         id = previousValue.id,
         name = this.name ?: previousValue.name,
         email=this.email ?: previousValue.email,
-        password = this.password ?: previousValue.password
+        password = this.password ?: previousValue.password,
+        status = previousValue.status
     )
 }
 
-//fun CustomerModel.toResponse() : CustomerResponse {
-//    return CustomerResponse(
-//        id = this.id!!,
-//        name = this.name,
-//        email = this.email,
-//    )
-//}
+fun CustomerModel.toResponse(): CustomerResponse {
+    return CustomerResponse(
+        id = this.id!!,
+        name = this.name,
+        email = this.email,
+        status = this.status!!
+    )
+}
 
 fun PostEmployeeRequest.toEmployeeModel():EmployeeModel{
     return EmployeeModel(
         name = this.name,
         email=this.email,
         password = this.password,
-        role = this.role
+        role = RoleType.COMMON,
+        status = EmployeeStatus.ACTIVE
     )
 }
 
@@ -56,7 +65,8 @@ fun PutEmployeeRequest.toEmployeeModel(previousValue: EmployeeModel ):EmployeeMo
         name = this.name ?: previousValue.name,
         email=this.email ?: previousValue.email,
         password = this.password ?: previousValue.password,
-        role = this.role ?: previousValue.role
+        role = previousValue.role,
+        status = previousValue.status
     )
 }
 
@@ -65,7 +75,7 @@ fun PostTableRequest.toTableModel(): TableModel{
         id = this.id,
         number = this.number,
         capacity = this.capacity,
-        status = this.status
+        status = TableStatus.EMPTY
     )
 }
 
@@ -74,7 +84,7 @@ fun PutTableRequest.toTableModel(previousValue: TableModel): TableModel{
         id = previousValue.id,
         number = this.number ?: previousValue.number,
         capacity = this.capacity ?: previousValue.capacity,
-        status = this.status ?: previousValue.status
+        status = previousValue.status
     )
 }
 
