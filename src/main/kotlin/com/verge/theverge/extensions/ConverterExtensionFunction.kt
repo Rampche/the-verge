@@ -4,8 +4,6 @@ import com.verge.theverge.controller.requests.customer.PostCustomerRequest
 import com.verge.theverge.controller.requests.customer.PutCustomerRequest
 import com.verge.theverge.controller.requests.employee.PostEmployeeRequest
 import com.verge.theverge.controller.requests.employee.PutEmployeeRequest
-import com.verge.theverge.controller.requests.invoice.PostInvoiceRequest
-import com.verge.theverge.controller.requests.invoice.PutInvoiceRequest
 import com.verge.theverge.controller.requests.order.PostOrderRequest
 import com.verge.theverge.controller.requests.order.PutOrderRequest
 import com.verge.theverge.controller.requests.orderitem.PostOrderItemRequest
@@ -123,23 +121,6 @@ fun PutOrderRequest.toOrderModel(previousValue: OrderModel):OrderModel{
         id = previousValue.id,
         schedule = this.schedule ?: previousValue.schedule,
 
-    )
-}
-
-fun PostInvoiceRequest.toInvoiceModel(order: OrderModel, orderitem: OrderItemModel):InvoiceModel{
-    return InvoiceModel(
-        order = order,
-        orderitem = orderitem,
-        total = this.total
-    )
-}
-
-fun PutInvoiceRequest.toInvoiceModel(previousValue: InvoiceModel, previousOrder: OrderModel, previousOrderItem: OrderItemModel):InvoiceModel{
-    return InvoiceModel(
-        id = previousValue.id,
-        order = previousOrder,
-        orderitem = previousOrderItem,
-        total = this.total ?: previousValue.total
     )
 }
 
