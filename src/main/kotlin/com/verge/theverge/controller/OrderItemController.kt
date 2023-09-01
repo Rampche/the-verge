@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController
 class OrderItemController(
     val orderItemService: OrderItemService,
     val itemService: ItemsService,
-    val orderService: OrderService
 ) {
 
     @PostMapping
