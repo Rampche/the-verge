@@ -24,9 +24,6 @@ enum class Errors(val code: String, val message: String) {
     //Orders Exceptions
     VG501("VG-501", "Order nº [%s] not found"),
 
-    //Invoices Exceptions
-    VG601("VG-601", "Invoice nº [%s] not found"),
-
     //OrderItems Exceptions
     VG701("VG-701", "OrderItem nº [%s] not found"),
 
