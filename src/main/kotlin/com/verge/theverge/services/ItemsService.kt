@@ -47,4 +47,8 @@ class ItemsService(
         itemsRepository.deleteById(id)
     }
 
+    fun findAllById(itemsIds: Set<Int>): List<ItemsModel> {
+        return itemsRepository.findAllById(itemsIds).toList()
+    }
+
 }
