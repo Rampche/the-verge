@@ -6,8 +6,6 @@ import com.verge.theverge.controller.requests.employee.PostEmployeeRequest
 import com.verge.theverge.controller.requests.employee.PutEmployeeRequest
 import com.verge.theverge.controller.requests.order.PostOrderRequest
 import com.verge.theverge.controller.requests.order.PutOrderRequest
-import com.verge.theverge.controller.requests.orderitem.PostOrderItemRequest
-import com.verge.theverge.controller.requests.orderitem.PutOrderItemRequest
 import com.verge.theverge.controller.requests.reservation.PostReservationRequest
 import com.verge.theverge.controller.requests.reservation.PutReservationRequest
 import com.verge.theverge.controller.requests.tables.PostTableRequest
@@ -120,22 +118,6 @@ fun PutOrderRequest.toOrderModel(previousValue: OrderModel):OrderModel{
     return OrderModel(
         id = previousValue.id,
         schedule = this.schedule ?: previousValue.schedule,
-
-    )
-}
-
-fun PostOrderItemRequest.toOrderItemModel(items: ItemsModel?):OrderItemModel {
-    return OrderItemModel(
-        items = items,
-        quantity = this.quantity
-    )
-}
-
-fun PutOrderItemRequest.toOrderItemModel(previousValue: OrderItemModel, previousItem: ItemsModel?):OrderItemModel {
-    return OrderItemModel(
-        items = previousItem,
-        quantity = this.quantity ?: previousValue.quantity
-
 
     )
 }
