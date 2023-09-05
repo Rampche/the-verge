@@ -25,15 +25,15 @@ class ItemsService(
     //Find item by Id
     fun findItemById(id: Int): ItemsModel{
         if (!itemsRepository.existsById(id)){
-            throw NotFoundException(Errors.VG801.message.format(id), Errors.VG801.code)
+            throw NotFoundException(Errors.VG601.message.format(id), Errors.VG601.code)
         }
-        return itemsRepository.findById(id).orElseThrow { NotFoundException(Errors.VG801.message.format(id), Errors.VG801.code) }
+        return itemsRepository.findById(id).orElseThrow { NotFoundException(Errors.VG601.message.format(id), Errors.VG601.code) }
     }
 
     //Update item
     fun updateItem(item: ItemsModel) {
         if (!itemsRepository.existsById(item.id!!)){
-            throw NotFoundException(Errors.VG801.message.format(item.id), Errors.VG801.code)
+            throw NotFoundException(Errors.VG601.message.format(item.id), Errors.VG601.code)
         }
         itemsRepository.save(item)
     }
@@ -42,7 +42,7 @@ class ItemsService(
     //Delete Item
     fun deleteItem(id: Int) {
         if (!itemsRepository.existsById(id)){
-            throw NotFoundException(Errors.VG801.message.format(id), Errors.VG801.code)
+            throw NotFoundException(Errors.VG601.message.format(id), Errors.VG601.code)
         }
         itemsRepository.deleteById(id)
     }
