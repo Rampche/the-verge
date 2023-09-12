@@ -8,6 +8,7 @@ import java.time.LocalTime
 data class PutReservationRequest (
     val date: LocalDate?,
     val time: LocalTime?,
+    @JsonAlias("party_size")
     val partySize: Int?,
     @JsonAlias("customer_id")
     val customer: Int?,
