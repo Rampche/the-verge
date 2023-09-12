@@ -11,6 +11,7 @@ enum class Errors(val code: String, val message: String) {
     //Tables Exceptions
     VG201("VG-201", "The table [%s] is already reserved"),
     VG202("VG-202", "Table nº [%s] not found"),
+    VG203("VG-203", "Table nº [%s] is Empty"),
 
     //Employees Exceptions
     VG301("VG-301", "Employee nº [%s] not found"),
