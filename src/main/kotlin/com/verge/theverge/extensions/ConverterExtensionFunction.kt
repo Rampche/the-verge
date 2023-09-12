@@ -94,30 +94,29 @@ fun PostReservationRequest.toReservationModel(customer: CustomerModel, table: Ta
     )
 }
 
-fun PutReservationRequest.toReservationModel(previousValue: ReservationModel, previousTable: TableModel):ReservationModel{
+fun PutReservationRequest.toReservationModel(previousTable: TableModel, previousCustomer: CustomerModel, previousValue: ReservationModel):ReservationModel{
     return ReservationModel(
         id = previousValue.id,
         date = this.date ?: previousValue.date,
         time = this.time ?: previousValue.time,
         partySize = this.partySize ?: previousValue.partySize,
         table = previousTable,
-        customer = previousValue.customer
+        customer = previousCustomer
     )
 }
 
-fun PostOrderRequest.toOrderModel(employee: EmployeeModel, reservation: ReservationModel):OrderModel{
+fun PostOrderRequest.toOrderModel(table: TableModel):OrderModel{
     return OrderModel(
-        schedule = this.schedule,
-        employee = employee,
-        reservation = reservation,
+        paymentStatus = this.paymentStatus,
+        table = table
 
     )
 }
 
-fun PutOrderRequest.toOrderModel(previousValue: OrderModel):OrderModel{
+fun PutOrderRequest.toOrderModel(previousTable: TableModel, previousValue: OrderModel):OrderModel{
     return OrderModel(
         id = previousValue.id,
-        schedule = this.schedule ?: previousValue.schedule,
-
+        paymentStatus = this.paymentStatus ?: previousValue.paymentStatus,
+        table = previousTable
     )
 }
