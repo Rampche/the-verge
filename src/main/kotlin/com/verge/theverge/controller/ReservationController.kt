@@ -50,9 +50,9 @@ class ReservationController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateReservation(@PathVariable id: Int, @RequestBody reservation: PutReservationRequest){
             val reservationSaved = reservationService.findReservationById(id)
-            val tableSaved = tableService.findTableById(reservation.table!!)
-            val tableUpdated = tableService.findTableById(reservation.table)
-            reservationService.updateReservation(reservation.toReservationModel(reservationSaved, tableSaved), tableUpdated)
+            val customerUpdated = customerService.findCustomerById(reservation.customer!!)
+            val tableUpdated = tableService.findTableById(reservation.table!!)
+            reservationService.updateReservation(reservation.toReservationModel(tableUpdated, customerUpdated, reservationSaved), tableUpdated)
     }
 
     @DeleteMapping("/{id}")
