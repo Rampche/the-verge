@@ -1,10 +1,8 @@
 CREATE TABLE purchase(
 purchase_id int auto_increment primary key,
 tables_id int not null,
-nfe varchar(255),
 price DECIMAL(15,2) not null,
 created_at datetime,
-payment_status boolean not null,
 FOREIGN KEY (tables_id) REFERENCES tables(tables_id)
 );
 
