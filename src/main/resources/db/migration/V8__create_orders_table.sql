@@ -1,9 +1,7 @@
 CREATE TABLE orders(
 orders_id int auto_increment primary key,
-schedule time(0),
-total decimal(10,2),
-employee_id int,
-FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
-reservation_id int,
-FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id)
+payment_status boolean not null,
+nfe varchar(255),
+tables_id int,
+FOREIGN KEY (tables_id) REFERENCES tables(tables_id)
 );
