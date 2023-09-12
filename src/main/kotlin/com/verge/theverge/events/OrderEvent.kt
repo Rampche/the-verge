@@ -1,11 +1,11 @@
 package com.verge.theverge.events
 
-import com.verge.theverge.models.PurchaseModel
+import com.verge.theverge.models.OrderModel
 import org.springframework.context.ApplicationEvent
 
-class PurchaseEvent (
+class OrderEvent (
     source: Any,
-    val purchaseModel: PurchaseModel
+    val orderModel: OrderModel
 ):ApplicationEvent(source)
 
 
