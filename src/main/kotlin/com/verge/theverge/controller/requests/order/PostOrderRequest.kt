@@ -1,15 +1,15 @@
 package com.verge.theverge.controller.requests.order
 
 import com.fasterxml.jackson.annotation.JsonAlias
+import com.verge.theverge.models.TableModel
 import java.time.LocalTime
 
 data class PostOrderRequest(
-    val schedule: LocalTime,
 
-    @JsonAlias("reservation_id")
-    val reservation: Int,
+    @JsonAlias("payment_status")
+    val paymentStatus: Boolean? = false,
 
-    @JsonAlias("employee_id")
-    val employee: Int,
+    @JsonAlias("tables_id")
+    val table: Int
 
 )

@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import java.time.LocalTime
 
 @Entity(name = "orders")
 data class OrderModel(
@@ -17,15 +16,14 @@ data class OrderModel(
     @Column(name= "orders_id")
     var id: Int? = null,
 
-    @Column(name ="schedule")
-    var schedule: LocalTime,
+    @Column(name="nfe")
+    val nfe: String? = null,
+
+    @Column(name="payment_status")
+    val paymentStatus: Boolean? = false,
 
     @ManyToOne
-    @JoinColumn(name = "employee_id")
-    var employee: EmployeeModel? = null,
-
-    @ManyToOne
-    @JoinColumn(name = "reservation_id")
-    var reservation: ReservationModel? = null
+    @JoinColumn(name = "tables_id")
+    var table: TableModel? = null,
 
 )

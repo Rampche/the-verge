@@ -2,9 +2,11 @@ package com.verge.theverge.controller
 
 import com.verge.theverge.controller.requests.order.PostOrderRequest
 import com.verge.theverge.controller.requests.order.PutOrderRequest
+import com.verge.theverge.events.OrderEvent
 import com.verge.theverge.extensions.toOrderModel
 import com.verge.theverge.models.OrderModel
 import com.verge.theverge.services.*
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -22,17 +24,14 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/orders")
 class OrderController(
     val orderService: OrderService,
-    val employeeService: EmployeeService,
-    val reservationService: ReservationService,
-
+    val tablesService: TablesService,
     ) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createOrder(@RequestBody order: PostOrderRequest){
-        val employee = employeeService.findEmployeeById(order.employee)
-        val reservation = reservationService.findReservationById(order.reservation)
-        orderService.createOrder(order.toOrderModel(employee, reservation))
+        val table = tablesService.findTableById(order.table)
+        orderService.createOrder(order.toOrderModel(table))
     }
 
     @GetMapping
@@ -49,7 +48,8 @@ class OrderController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateOrder(@PathVariable id: Int, @RequestBody order: PutOrderRequest){
         val orderSaved = orderService.findOrderById(id)
-        orderService.updateOrder(order.toOrderModel((orderSaved)))
+        val tableSaved = tablesService.findTableById(order.table!!) //Consigo alterar
+        orderService.updateOrder(order.toOrderModel((tableSaved), orderSaved))
     }
 
     @DeleteMapping("/{id}")
