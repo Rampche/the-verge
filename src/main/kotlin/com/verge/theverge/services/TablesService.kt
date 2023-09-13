@@ -7,7 +7,9 @@ import com.verge.theverge.repository.TableRepository
 import org.springframework.stereotype.Service
 
 @Service
-class TablesService(val tableRepository: TableRepository) {
+class TablesService(
+    private val tableRepository: TableRepository
+) {
 
 
     //Create a new table

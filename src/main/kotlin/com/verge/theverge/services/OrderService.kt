@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class OrderService(
-    val orderRepository: OrderRepository,
+    private val orderRepository: OrderRepository,
     private val applicationEventPublisher: ApplicationEventPublisher,
-    val tableRepository: TableRepository
 ) {
 
     //Create a new order
@@ -49,6 +48,10 @@ class OrderService(
         if (!orderRepository.existsById(order.id!!)){
             throw NotFoundException(Errors.VG501.message.format(order.id), Errors.VG501.code)
         }
+        val table = order.table
+        if (order.paymentStatus == true){
+            table!!.status === TableStatus.EMPTY
+        }
         orderRepository.save(order)
     }
 
@@ -59,4 +62,5 @@ class OrderService(
         }
         orderRepository.deleteById(id)
     }
+
 }

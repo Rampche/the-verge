@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 
 class ItemsService(
-    val itemsRepository: ItemsRepository
+   private val itemsRepository: ItemsRepository
 ) {
 
     //Create a new item
