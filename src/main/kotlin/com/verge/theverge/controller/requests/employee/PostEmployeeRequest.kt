@@ -7,6 +7,5 @@ data class PostEmployeeRequest (
     val name: String,
     val email: String,
     val password: String,
-    val role: RoleType,
     val status: EmployeeStatus
 )
