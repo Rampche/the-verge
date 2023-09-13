@@ -20,9 +20,11 @@ data class EmployeeModel(
     @Column(name = "email")
     var email: String,
 
-    @Column(name="role")
+    @Column(name="roles")
     @Enumerated(EnumType.STRING)
-    var role: RoleType,
+    @CollectionTable(name="employee_roles", joinColumns = [JoinColumn(name= "employee_id")])
+    @ElementCollection(targetClass = RoleType::class, fetch = FetchType.EAGER)
+    var role: Set<RoleType> = setOf(),
 
     @Column(name = "password")
     var password: String
@@ -41,7 +43,7 @@ data class EmployeeModel(
         id: Int? = null,
         name: String,
         email: String,
-        role: RoleType,
+        role: Set<RoleType>,
         password: String,
         status: EmployeeStatus?
     ): this(id, name, email, role, password){

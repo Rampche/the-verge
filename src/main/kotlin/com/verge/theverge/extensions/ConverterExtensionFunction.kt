@@ -49,9 +49,7 @@ fun PostEmployeeRequest.toEmployeeModel():EmployeeModel{
     return EmployeeModel(
         name = this.name,
         email=this.email,
-        password = this.password,
-        role = RoleType.COMMON,
-        status = EmployeeStatus.ACTIVE
+        password = this.password
     )
 }
 
