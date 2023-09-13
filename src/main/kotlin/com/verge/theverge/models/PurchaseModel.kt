@@ -32,13 +32,7 @@ data class PurchaseModel(
     val items: MutableList<ItemsModel>,
 
     @Column
-    val nfe: String? = null,
-
-    @Column
     val price: BigDecimal,
-
-    @Column
-    val paymentStatus: Boolean? = false,
 
     @Column(name = "created_at")
     val createdAt: LocalDateTime = LocalDateTime.now()
