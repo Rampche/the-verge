@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ReservationService(
-    val reservationRepository: ReservationRepository,
-    val tableRepository: TableRepository
+   private val reservationRepository: ReservationRepository,
+   private val tableRepository: TableRepository
     ) {
 
     //Create a reservation
@@ -40,7 +40,7 @@ class ReservationService(
     }
 
     //Update the reservation
-    fun updateReservation(reservation: ReservationModel, tableUpdated: TableModel?){
+    fun updateReservation(reservation: ReservationModel, tableUpdated: TableModel){
         if (!reservationRepository.existsById(reservation.id!!)){
             throw NotFoundException(Errors.VG401.message.format(reservation.id), Errors.VG401.code)
         }
