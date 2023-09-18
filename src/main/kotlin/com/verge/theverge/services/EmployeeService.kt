@@ -6,14 +6,23 @@ import com.verge.theverge.enums.RoleType
 import com.verge.theverge.exception.NotFoundException
 import com.verge.theverge.models.EmployeeModel
 import com.verge.theverge.repository.EmployeeRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class EmployeeService(val employeeRepository: EmployeeRepository) {
+class EmployeeService(
+    private val employeeRepository: EmployeeRepository,
+    private val bCrypt: BCryptPasswordEncoder
+
+) {
 
     //Create a new Employee
     fun createEmployee(employee: EmployeeModel) {
-        employeeRepository.save(employee)
+        val employeeCopy = employee.copy(
+            role = setOf(RoleType.COMMON),
+            password = bCrypt.encode((employee.password))
+        )
+        employeeRepository.save(employeeCopy)
     }
 
     //Show all Employees
