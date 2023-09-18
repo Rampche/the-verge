@@ -44,10 +44,10 @@ class ReservationService(
         if (!reservationRepository.existsById(reservation.id!!)){
             throw NotFoundException(Errors.VG401.message.format(reservation.id), Errors.VG401.code)
         }
-        if (tableUpdated != null && tableUpdated.status == TableStatus.EMPTY) {
+        if (tableUpdated.status == TableStatus.EMPTY) {
             tableUpdated.status = TableStatus.RESERVED
             tableRepository.save(tableUpdated)
-        } else if (tableUpdated != null && tableUpdated.status == TableStatus.RESERVED){
+        } else if (tableUpdated.status == TableStatus.RESERVED){
             throw ReservedTableException(Errors.VG201.message.format(tableUpdated.id), Errors.VG201.code)
         }
         reservationRepository.save(reservation)
