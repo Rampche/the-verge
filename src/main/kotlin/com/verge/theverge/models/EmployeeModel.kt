@@ -20,9 +20,9 @@ data class EmployeeModel(
     @Column(name = "email")
     var email: String,
 
-    @Column(name="roles")
+    //@Column(name="roles")
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name="employee_roles", joinColumns = [JoinColumn(name= "employee_id")])
+    @CollectionTable(name="roles", joinColumns = [JoinColumn(name= "employee_id")])
     @ElementCollection(targetClass = RoleType::class, fetch = FetchType.EAGER)
     var role: Set<RoleType> = setOf(),
 
@@ -39,6 +39,7 @@ data class EmployeeModel(
             }
             field = value
         }
+
     constructor(
         id: Int? = null,
         name: String,
