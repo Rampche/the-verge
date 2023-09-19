@@ -1,7 +1,7 @@
 package com.verge.theverge.controller
 
 import com.verge.theverge.controller.mapper.PurchaseMapper
-import com.verge.theverge.controller.requests.PostPurchaseRequest
+import com.verge.theverge.controller.requests.purchase.PostPurchaseRequest
 import com.verge.theverge.services.PurchaseService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
