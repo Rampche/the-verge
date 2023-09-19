@@ -1,6 +1,6 @@
 package com.verge.theverge.controller.mapper
 
-import com.verge.theverge.controller.requests.PostPurchaseRequest
+import com.verge.theverge.controller.requests.purchase.PostPurchaseRequest
 import com.verge.theverge.models.PurchaseModel
 import com.verge.theverge.services.ItemsService
 import com.verge.theverge.services.TablesService
