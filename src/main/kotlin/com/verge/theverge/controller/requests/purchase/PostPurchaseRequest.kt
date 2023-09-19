@@ -1,4 +1,4 @@
-package com.verge.theverge.controller.requests
+package com.verge.theverge.controller.requests.purchase
 
 import com.fasterxml.jackson.annotation.JsonAlias
 import jakarta.validation.constraints.Positive
