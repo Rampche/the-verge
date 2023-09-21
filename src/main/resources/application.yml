@@ -9,3 +9,6 @@ jpa:
   jackson:
     default-property-inclusion: non_null
 
+jwt:
+  secret: 1f7bf053-e015-4635-945e-e2b3e7cd345a
+  expiration: 999999
