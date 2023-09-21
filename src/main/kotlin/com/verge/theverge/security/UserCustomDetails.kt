@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserCustomDetails(private val employeeModel: EmployeeModel): UserDetails {
-    val id = employeeModel.id
+    val id:Int = employeeModel.id!!
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         employeeModel.role.map { SimpleGrantedAuthority(it.description) }.toMutableList()
     override fun getPassword(): String = employeeModel.password
