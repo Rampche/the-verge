@@ -14,19 +14,19 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 class AuthenticationFilter(
-    authenticationManager: AuthenticationManager,
-    private val employeeRepository: EmployeeRepository
+    private val authenticationManager: AuthenticationManager,
+    private val employeeRepository: EmployeeRepository,
+    private val jwtUtil: JwtUtil
     ) : UsernamePasswordAuthenticationFilter(authenticationManager) {
 
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
-
         try {
             val authRequest = jacksonObjectMapper().readValue(request.inputStream, AuthRequest::class.java)
             val id = employeeRepository.findByEmail(authRequest.email)?.id
             val authToken = UsernamePasswordAuthenticationToken(id, authRequest.password)
             return authenticationManager.authenticate(authToken)
         } catch (ex: Exception){
-            throw BadLoginException(Errors.VG701.message.format(), Errors.VG701.code )
+            throw BadLoginException(Errors.VG701.message.format(), Errors.VG701.code)
         }
     }
 
@@ -37,8 +37,8 @@ class AuthenticationFilter(
         authResult: Authentication
     ) {
         val id = (authResult.principal as UserCustomDetails).id
-
-        response.addHeader("Authorization", "123456")
+        val token = jwtUtil.generateToken(id)
+        response.addHeader("Authorization", "Bearer $token")
     }
 
 }
