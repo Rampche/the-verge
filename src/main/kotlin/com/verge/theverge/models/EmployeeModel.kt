@@ -20,11 +20,11 @@ data class EmployeeModel(
     @Column(name = "email")
     var email: String,
 
-    //@Column(name="roles")
+    @Column(name="role")
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name="roles", joinColumns = [JoinColumn(name= "employee_id")])
     @ElementCollection(targetClass = RoleType::class, fetch = FetchType.EAGER)
-    var role: Set<RoleType> = setOf(),
+    @CollectionTable(name="roles", joinColumns = [JoinColumn(name= "employee_id")])
+    var role: Set<RoleType> = setOf(RoleType.COMMON),
 
     @Column(name = "password")
     var password: String
@@ -32,7 +32,7 @@ data class EmployeeModel(
 ) {
     @Column(name="status")
     @Enumerated(EnumType.STRING)
-    var status: EmployeeStatus ? = null
+    var status: EmployeeStatus ? = EmployeeStatus.ACTIVE
         set(value) {
             if (field == EmployeeStatus.DISMISSED){
                 throw StatusException(Errors.VG103.message.format(field), Errors.VG103.code)
