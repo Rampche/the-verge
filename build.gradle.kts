@@ -32,6 +32,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("com.auth0:java-jwt:4.4.0")
+
 }
 
 tasks.withType<KotlinCompile> {
