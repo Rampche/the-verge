@@ -1,39 +1,40 @@
 package com.verge.theverge.config
 
+import com.verge.theverge.enums.RoleType
 import com.verge.theverge.repository.EmployeeRepository
-import com.verge.theverge.security.AuthFilter
 import com.verge.theverge.security.AuthenticationFilter
+import com.verge.theverge.security.AuthorizationFilter
 import com.verge.theverge.security.JwtUtil
 import com.verge.theverge.services.UserDetailCustomService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.Customizer
+import org.springframework.security.authentication.ProviderManager
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
 
-
 @EnableWebSecurity
+@EnableMethodSecurity
 @Configuration
 class SecurityConfig(
     private val employeeRepository: EmployeeRepository,
     private val userDetails: UserDetailCustomService,
     private val jwtUtil: JwtUtil,
-    private val authenticationConfiguration: AuthenticationConfiguration
+    private val authenticationConfiguration: AuthenticationConfiguration,
+
+
 ) {
-    private val listOfPublicMatchers = arrayOf(
+    private val LIST_OF_PUBLIC_MATCHERS = arrayOf(
         "/customers",
         "/employees",
         "/tables",
@@ -41,6 +42,10 @@ class SecurityConfig(
         "/reservations",
         "/purchases",
         "/login"
+    )
+
+    private val ADMIN_MATCHERS = arrayOf(
+        "/admin/**"
     )
 
     @Bean
@@ -53,35 +58,39 @@ class SecurityConfig(
     }
 
     @Bean
-    @Throws(Exception::class)
     fun authenticationManager(): AuthenticationManager {
-        return authenticationConfiguration.authenticationManager
+        val authProvider = DaoAuthenticationProvider()
+        authProvider.setUserDetailsService(userDetails)
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder())
+
+        return ProviderManager(authProvider)
     }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .httpBasic(Customizer.withDefaults())
-            .sessionManagement { session: SessionManagementConfigurer<HttpSecurity?> ->
-                session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
-            .addFilter(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil))
+            .csrf { it.disable() }
+            .cors { it.disable() }
 
-            .csrf { csrf: CsrfConfigurer<HttpSecurity>? -> csrf?.disable() }
-            .authorizeHttpRequests { auth ->
-                auth
-                    .requestMatchers(HttpMethod.POST, *listOfPublicMatchers).permitAll()
-                    .requestMatchers("/**").hasRole("ADMIN")
-                    //.anyRequest().authenticated()
-                    //.requestMatchers(HttpMethod.POST, *listOfPublicMatchers).permitAll()
+        http.authorizeHttpRequests { it
+                .requestMatchers(*LIST_OF_PUBLIC_MATCHERS).permitAll()
+                .requestMatchers(*ADMIN_MATCHERS).hasAuthority(RoleType.ADMIN.description)
+                .requestMatchers("DELETE", "GET", "PUT").hasAuthority(RoleType.ADMIN.description)
+                .anyRequest().authenticated()
             }
-            .formLogin(Customizer.withDefaults())
+        http.addFilter(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil))
+        http.addFilter(AuthorizationFilter(authenticationManager(), jwtUtil, userDetails))
+            .csrf { csrf: CsrfConfigurer<HttpSecurity>? -> csrf?.disable() }
+
+        http.sessionManagement {
+            it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }
+
         return http.build()
     }
 
-
-
-
+fun configureSwagger(web:WebSecurity){
+    web.ignoring().requestMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui-html", "/webjars/**", "/swagger-ui")
+}
 
 }
