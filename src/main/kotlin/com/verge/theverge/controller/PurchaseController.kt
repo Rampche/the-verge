@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["http://localhost:3000"])
 @RequestMapping("/purchases")
 @RestController
 class PurchaseController(
