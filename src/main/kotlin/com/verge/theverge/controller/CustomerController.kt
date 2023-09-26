@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController
 import java.awt.print.Pageable
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:3000"])
 @RequestMapping("customers")
 class CustomerController(
     val customerService: CustomerService,
