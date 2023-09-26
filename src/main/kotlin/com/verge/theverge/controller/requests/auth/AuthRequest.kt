@@ -1,8 +1,11 @@
 package com.verge.theverge.controller.requests.auth
 
+import com.fasterxml.jackson.annotation.JsonAlias
+
 data class AuthRequest(
 
-    val email: String,
+    @JsonAlias("username")
+    val username: String,
 
     val password: String
 
