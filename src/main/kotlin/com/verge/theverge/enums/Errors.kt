@@ -29,6 +29,13 @@ enum class Errors(val code: String, val message: String) {
     VG601("VG-601", "Item nº [%s] not found"),
 
     //Login Exception
-    VG701("VG-701", "Incorrect credentials. Please try again.")
+    VG701("VG-701", "Incorrect credentials. Please try again."),
+
+    //JWT Exception
+    VG801("VG-801", "Incorrect Token"),
+
+    //Access Denied Exception
+    VG901("VG-901", "Access Denied")
+
 
 }
