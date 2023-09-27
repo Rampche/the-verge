@@ -5,12 +5,12 @@ import com.verge.theverge.controller.requests.employee.PutEmployeeRequest
 import com.verge.theverge.enums.RoleType
 import com.verge.theverge.extensions.toEmployeeModel
 import com.verge.theverge.models.EmployeeModel
+import com.verge.theverge.security.UserCanOnlyAccessTheirOwnResource
 import com.verge.theverge.services.EmployeeService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:3000"])
 @RequestMapping("employees")
 class EmployeeController(val employeeService: EmployeeService) {
 
@@ -21,16 +21,19 @@ class EmployeeController(val employeeService: EmployeeService) {
     }
 
     @GetMapping
+    @UserCanOnlyAccessTheirOwnResource
     fun getAllEmployees(@RequestParam name:String?): List<EmployeeModel>{
         return employeeService.getAllEmployees(name)
     }
 
     @GetMapping("/actives")
+    @UserCanOnlyAccessTheirOwnResource
     fun findActives():List<EmployeeModel>{
         return employeeService.findActives()
     }
 
     @GetMapping("/dismisseds")
+    @UserCanOnlyAccessTheirOwnResource
     fun findDismisseds():List<EmployeeModel>{
         return employeeService.findDismisseds()
     }
@@ -41,6 +44,7 @@ class EmployeeController(val employeeService: EmployeeService) {
     }
 
     @GetMapping("/{id}")
+    @UserCanOnlyAccessTheirOwnResource
     fun findEmployeeById(@PathVariable id:Int):EmployeeModel{
         return employeeService.findEmployeeById(id)
     }
