@@ -22,7 +22,7 @@ class AuthenticationFilter(
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
         try {
             val authRequest = jacksonObjectMapper().readValue(request.inputStream, AuthRequest::class.java)
-            val id = employeeRepository.findByEmail(authRequest.email)?.id
+            val id = employeeRepository.findByEmail(authRequest.username)?.id
             val authToken = UsernamePasswordAuthenticationToken(id, authRequest.password)
             return authenticationManager.authenticate(authToken)
         } catch (ex: Exception){
