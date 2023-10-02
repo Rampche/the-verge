@@ -38,5 +38,4 @@ class AuthorizationFilter(
         return UsernamePasswordAuthenticationToken(employee, null, employee.authorities)
 
     }
-
 }
