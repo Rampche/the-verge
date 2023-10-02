@@ -8,6 +8,7 @@ import com.verge.theverge.security.JwtUtil
 import com.verge.theverge.services.UserDetailCustomService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
@@ -17,7 +18,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
@@ -73,14 +73,17 @@ class SecurityConfig(
             .cors { it.disable() }
 
         http.authorizeHttpRequests { it
-                .requestMatchers(*LIST_OF_PUBLIC_MATCHERS).permitAll()
-                .requestMatchers(*ADMIN_MATCHERS).hasAuthority(RoleType.ADMIN.description)
-                .requestMatchers("DELETE", "GET", "PUT").hasAuthority(RoleType.ADMIN.description)
+            .requestMatchers("/auth/api/**").permitAll()
+            .requestMatchers(HttpMethod.GET,"/").permitAll()
+            .requestMatchers(*LIST_OF_PUBLIC_MATCHERS).permitAll()
+            .requestMatchers(*ADMIN_MATCHERS).hasAuthority(RoleType.ADMIN.description)
                 .anyRequest().authenticated()
             }
+
         http.addFilter(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil))
         http.addFilter(AuthorizationFilter(authenticationManager(), jwtUtil, userDetails))
-            .csrf { csrf: CsrfConfigurer<HttpSecurity>? -> csrf?.disable() }
+
+            //.csrf { csrf: CsrfConfigurer<HttpSecurity>? -> csrf?.disable() }
 
         http.sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
