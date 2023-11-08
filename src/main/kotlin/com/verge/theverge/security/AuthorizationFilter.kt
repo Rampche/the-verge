@@ -6,16 +6,14 @@ import com.verge.theverge.services.UserDetailCustomService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.web.filter.OncePerRequestFilter
 
 class AuthorizationFilter(
-    authenticationManager: AuthenticationManager,
     private val jwtUtil: JwtUtil,
     private val userDetails: UserDetailCustomService
-):BasicAuthenticationFilter(authenticationManager) {
+):OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val authorization = request.getHeader("Authorization")
