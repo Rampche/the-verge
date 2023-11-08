@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 
 @EnableWebSecurity
@@ -30,10 +31,9 @@ class SecurityConfig(
     private val employeeRepository: EmployeeRepository,
     private val userDetails: UserDetailCustomService,
     private val jwtUtil: JwtUtil,
-    private val authenticationConfiguration: AuthenticationConfiguration,
-
-
+    private val authenticationConfiguration: AuthenticationConfiguration
 ) {
+
     private val LIST_OF_PUBLIC_MATCHERS = arrayOf(
         "/customers",
         "/employees",
@@ -73,17 +73,17 @@ class SecurityConfig(
             .cors { it.disable() }
 
         http.authorizeHttpRequests { it
+            .requestMatchers(HttpMethod.POST, "/login").permitAll()
             .requestMatchers("/auth/api/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/").permitAll()
             .requestMatchers(*LIST_OF_PUBLIC_MATCHERS).permitAll()
             .requestMatchers(*ADMIN_MATCHERS).hasAuthority(RoleType.ADMIN.description)
                 .anyRequest().authenticated()
             }
-
-        http.addFilter(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil))
-        http.addFilter(AuthorizationFilter(authenticationManager(), jwtUtil, userDetails))
-
-            //.csrf { csrf: CsrfConfigurer<HttpSecurity>? -> csrf?.disable() }
+        http.addFilterBefore(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil), UsernamePasswordAuthenticationFilter().javaClass)
+        http.addFilterBefore(AuthorizationFilter(jwtUtil, userDetails), UsernamePasswordAuthenticationFilter().javaClass)
+        //http.addFilter(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil))
+        //http.addFilter(AuthorizationFilter(authenticationManager(), jwtUtil, userDetails))
 
         http.sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
