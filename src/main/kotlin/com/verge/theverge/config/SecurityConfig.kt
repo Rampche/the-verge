@@ -41,7 +41,8 @@ class SecurityConfig(
         "/orders",
         "/reservations",
         "/purchases",
-        "/login"
+        "/login",
+        "/auth/signin"
     )
 
     private val ADMIN_MATCHERS = arrayOf(
@@ -73,9 +74,10 @@ class SecurityConfig(
             .cors { it.disable() }
 
         http.authorizeHttpRequests { it
-            .requestMatchers(HttpMethod.POST, "/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/login", "/auth/signin").permitAll()
             .requestMatchers("/auth/api/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers(*LIST_OF_PUBLIC_MATCHERS).permitAll()
             .requestMatchers(*ADMIN_MATCHERS).hasAuthority(RoleType.ADMIN.description)
                 .anyRequest().authenticated()
@@ -83,7 +85,7 @@ class SecurityConfig(
         http.addFilterBefore(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil), UsernamePasswordAuthenticationFilter().javaClass)
         http.addFilterBefore(AuthorizationFilter(jwtUtil, userDetails), UsernamePasswordAuthenticationFilter().javaClass)
         //http.addFilter(AuthenticationFilter(authenticationManager(), employeeRepository, jwtUtil))
-        //http.addFilter(AuthorizationFilter(authenticationManager(), jwtUtil, userDetails))
+        //http.addFilter(AuthorizationFilter(jwtUtil, userDetails))
 
         http.sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
