@@ -6,6 +6,8 @@ import com.verge.theverge.enums.RoleType
 import com.verge.theverge.exception.NotFoundException
 import com.verge.theverge.models.EmployeeModel
 import com.verge.theverge.repository.EmployeeRepository
+import com.verge.theverge.security.UserCustomDetails
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -60,6 +62,11 @@ class EmployeeService(
             throw NotFoundException(Errors.VG301.message.format(id), Errors.VG301.code)
         }
         return employeeRepository.findById(id).orElseThrow()
+    }
+
+    fun findEmployeeByEmail(email: String): String? {
+        val employee = SecurityContextHolder.getContext().authentication.principal as UserCustomDetails
+        return employee.username
     }
 
     //Update Employee
